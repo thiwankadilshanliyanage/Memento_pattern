@@ -1,5 +1,6 @@
 
 import java.util.ArrayList;
+import java.util.Stack;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -20,6 +21,7 @@ public class Test {
         a.setI(50);
         a.setI(80);
         a.setI(200);
+        
     }
 
 }
@@ -27,7 +29,7 @@ public class Test {
 class A {    // Originator
 
     private int i;
-    private final A_Caretaker caretaker = new A_Caretaker();
+    private final A_Caretaker caretaker = new A_Caretaker();//HAS-A
 
     public A(int i) {
         this.i = i;
@@ -38,6 +40,9 @@ class A {    // Originator
         caretaker.addMemento(new A_Memento(i));
     }
 
+    public int getI() {
+        return i;
+    }
     public void save() {
         caretaker.addMemento(new A_Memento(i));
     }
@@ -62,14 +67,13 @@ class A_Memento {//Memento
 
 class A_Caretaker {//Care Taker
 
-    private final ArrayList<A_Memento> mementoList = new ArrayList<>();
+    private final Stack<A_Memento> mementoStack = new Stack<>();
 
     public void addMemento(A_Memento memento) {
-        mementoList.add(memento);
+        mementoStack.add(memento);
     }
     public A_Memento getMemento() {
-        A_Memento memento = mementoList.get(mementoList.size()-1);
-        mementoList.remove(memento);
+        A_Memento memento = mementoStack.pop();
         return memento;
     }
 
