@@ -1,98 +1,66 @@
 
 import java.util.Stack;
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
-/**
- *
- * @author Thiwanka
- */
-
 public class module {
-    
     public static void main(String[] args) {
+            
+        Originator originator = new Originator();
+        originator.setData("Hello");
+        originator.setData("Java");
+        originator.save();
+        originator.setData("OOP");
+        originator.save();
+        originator.setData("Java Institute");
+        originator.save();
         
-        File f=new File();
-        f.setFileContent("Starting");
-        f.save();
-        f.setFileContent("Writing");
-        f.save();
-        f.setFileContent("Still Writing");
-        f.save();
-        f.setFileContent("Finish");
-        f.save();
+        originator.undo();
+        System.out.println(originator.getData());
         
-        f.undo();
-        System.out.println(f.getFileContent());
-        f.undo();
-        System.out.println(f.getFileContent());
-        f.undo();
-        System.out.println(f.getFileContent());
-        
-    }
-    
+        originator.undo();
+        System.out.println(originator.getData());
 }
+}
+class Originator{
 
-class File{
-
-    /**
-     * @return the fileContent
-     */
-    public String getFileContent() {
-        return fileContent;
+    private String data;
+    private final CareTaker careTaker = new CareTaker();
+    
+    public String getData() {
+        return data;
     }
 
-    /**
-     * @param fileContent the fileContent to set
-     */
-    public void setFileContent(String fileContent) {
-        this.fileContent = fileContent;
+    public void setData(String data) {
+        this.data = data;
     }
-    
-    private String fileContent;
-    private final File_caretaker filecaretaker=new File_caretaker();
-    
     public void save(){
-        filecaretaker.addmemento(new File_Momento(fileContent));
+        careTaker.addMemento(new Memento(data));
     }
-    
     public void undo(){
-        this.fileContent=filecaretaker.getMemento().getFileContent();
+       this.data =  careTaker.getMemento().getData();
     }
-    
 }
 
-class File_Momento{
+class Memento{
+    private final String data;
 
-    /**
-     * @return the fileContent
-     */
-    public String getFileContent() {
-        return fileContent;
+    public Memento(String data) {
+        this.data= data;
     }
-    
-    private final String fileContent;
 
-    public File_Momento(String fileContent) {
-        this.fileContent = fileContent;
-    }
+   
     
+    public String getData() {
+        return data;
+    }
 }
 
-class File_caretaker{
-    
-    Stack<File_Momento> mementoStack=new Stack<>();
-    
-    public void addmemento(File_Momento memento){
-        mementoStack.push(memento);
-    }
-    
-    public File_Momento getMemento(){
-        return mementoStack.pop();
-    }
-    
-}
+ class CareTaker{
+     private final Stack<Memento> mementoStack = new Stack<>();
+     public void addMemento(Memento memento){
+         mementoStack.push(memento);
+     }
+     public Memento getMemento(){
+         return mementoStack.pop();
+     }
+     
+ }
