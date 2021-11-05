@@ -68,7 +68,9 @@ class A_Caretaker {//Care Taker
         mementoList.add(memento);
     }
     public A_Memento getMemento() {
-       return mementoList.get(mementoList.size()-1);
+        A_Memento memento = mementoList.get(mementoList.size()-1);
+        mementoList.remove(memento);
+        return memento;
     }
 
 }
